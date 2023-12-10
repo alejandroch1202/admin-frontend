@@ -16,25 +16,31 @@ import { DeleteIcon, EditIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 import axiosConfig from '../../config/axios'
 import Layout from '../../layout'
 
-const header = ['id', 'tipo', 'peso de compra', 'precio de compra', 'acciones']
+const header = [
+  'id',
+  'tipo',
+  'peso de compra (kg)',
+  'precio de compra ($)',
+  'acciones'
+]
 
-const Cattle = () => {
-  const [cattle, setCattle] = useState([])
+const Cows = () => {
+  const [cows, setCows] = useState([])
 
-  const getCattle = async () => {
-    const cattle = await axiosConfig.get('/cattle')
-    setCattle(cattle.data.data)
+  const getCows = async () => {
+    const cows = await axiosConfig.get('/cows')
+    setCows(cows.data.data)
   }
 
   useEffect(() => {
     try {
-      getCattle()
+      getCows()
     } catch (error) {
       console.log(error)
     }
   }, [])
 
-  if (cattle.length === 0) {
+  if (cows.length === 0) {
     return (
       <Layout>
         <Box mt={'40'}>
@@ -76,12 +82,12 @@ const Cattle = () => {
             }}
           >
             <Tr>
-              {header.map((x) => (
+              {header.map((index) => (
                 <Th
-                  key={x}
+                  key={index}
                   textAlign={'center'}
                 >
-                  {x}
+                  {index}
                 </Th>
               ))}
             </Tr>
@@ -92,7 +98,7 @@ const Cattle = () => {
               md: 'table-row-group'
             }}
           >
-            {cattle.map((animal, tid) => {
+            {cows.map((cow, tid) => {
               return (
                 <Tr
                   key={tid}
@@ -105,7 +111,7 @@ const Cattle = () => {
                     gridGap: '10px'
                   }}
                 >
-                  {Object.keys(animal).map((property, index) => {
+                  {Object.keys(cow).map((property, index) => {
                     return (
                       <React.Fragment key={`${tid}${property}`}>
                         <Td
@@ -131,7 +137,7 @@ const Cattle = () => {
                           fontSize='md'
                           fontWeight='hairline'
                         >
-                          {animal[property]}
+                          {cow[property]}
                         </Td>
                       </React.Fragment>
                     )
@@ -185,4 +191,4 @@ const Cattle = () => {
   )
 }
 
-export default Cattle
+export default Cows

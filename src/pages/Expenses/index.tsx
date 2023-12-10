@@ -16,7 +16,7 @@ import { DeleteIcon, EditIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 import axiosConfig from '../../config/axios'
 import Layout from '../../layout'
 
-const header = ['id', 'nombre', 'tipo', 'cantidad', 'acciones']
+const header = ['nombre', 'tipo', 'cantidad ($)', 'acciones']
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([])
