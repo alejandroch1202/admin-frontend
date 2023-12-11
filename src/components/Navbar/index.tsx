@@ -26,8 +26,8 @@ import logo from './../../assets/logo-white.png'
 
 const Links = [
   { title: 'Panel', path: '/' },
-  { title: 'Ganado', path: '/ganado' },
-  { title: 'Gastos', path: '/gastos' }
+  { title: 'Ganado', path: '/cows' },
+  { title: 'Gastos', path: '/expenses' }
 ]
 
 interface Props {

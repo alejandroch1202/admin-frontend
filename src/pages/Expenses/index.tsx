@@ -12,7 +12,7 @@ import {
   Thead,
   Tr
 } from '@chakra-ui/react'
-import { DeleteIcon, EditIcon, ExternalLinkIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import axiosConfig from '../../config/axios'
 import Layout from '../../layout'
 
@@ -154,17 +154,17 @@ const Expenses = () => {
                   </Td>
                   <Td textAlign={'center'}>
                     <ButtonGroup
-                      variant='solid'
+                      variant='ghost'
                       size='sm'
                       spacing={3}
                     >
-                      <IconButton
-                        colorScheme='blue'
+                      {/* <IconButton
+                        colorScheme='green'
                         icon={<ExternalLinkIcon />}
                         aria-label='Ver mas'
-                      />
+                      /> */}
                       <IconButton
-                        colorScheme='green'
+                        colorScheme='blue'
                         icon={<EditIcon />}
                         aria-label='Editar'
                       />

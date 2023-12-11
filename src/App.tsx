@@ -8,8 +8,9 @@ import Navbar from './components/Navbar'
 const AppRoutes = () => {
   const routes = useRoutes([
     { path: '/', element: <Home /> },
-    { path: '/ganado', element: <Cows /> },
-    { path: '/gastos', element: <Expenses /> },
+    { path: '/cows', element: <Cows /> },
+    { path: '/cows/edit/:id', element: <Cows /> },
+    { path: '/expenses', element: <Expenses /> },
     { path: '/*', element: <NotFound /> }
   ])
   return routes
