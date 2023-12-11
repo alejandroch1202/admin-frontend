@@ -28,6 +28,7 @@ const header = [
   'tipo',
   'peso de compra (kg)',
   'precio de compra ($)',
+  'precio total de compra ($)',
   'acciones'
 ]
 
@@ -103,7 +104,7 @@ const Cows = () => {
         textAlign={'center'}
         justifyContent='center'
       >
-        {isOpenCreate === true && (
+        {isOpenCreate && (
           <CreateCow
             isOpen={isOpenCreate}
             onClose={onCloseCreate}
@@ -112,7 +113,7 @@ const Cows = () => {
           />
         )}
 
-        {isOpenEdit === true && (
+        {isOpenEdit && (
           <EditCow
             isOpen={isOpenEdit}
             onClose={onCloseEdit}
@@ -121,7 +122,7 @@ const Cows = () => {
           />
         )}
 
-        {isOpenDelete === true && (
+        {isOpenDelete && (
           <DeleteCow
             cowId={cowId}
             isOpen={isOpenDelete}
@@ -188,6 +189,7 @@ const Cows = () => {
                     gridGap: '10px'
                   }}
                 >
+                  {/* Filtering _id and __v */}
                   {Object.keys(cow)
                     .filter(
                       (property) => property !== '_id' && property !== '__v'
@@ -237,8 +239,34 @@ const Cows = () => {
                       fontFamily: 'heading'
                     }}
                   >
-                    Acciones
+                    <Text textAlign={'center'}>precio total de compra ($)</Text>
                   </Td>
+                  <Td
+                    textAlign={'center'}
+                    color={'gray.500'}
+                    fontSize='md'
+                    fontWeight='hairline'
+                  >
+                    {(cow.purchasePrice * cow.purchaseWeight).toFixed(2)}
+                  </Td>
+
+                  <Td
+                    display={{
+                      base: 'table-cell',
+                      md: 'none'
+                    }}
+                    sx={{
+                      textTransform: 'uppercase',
+                      color: 'gray.500',
+                      fontSize: 'xs',
+                      fontWeight: 'bold',
+                      letterSpacing: 'wider',
+                      fontFamily: 'heading'
+                    }}
+                  >
+                    <Text textAlign={'center'}>acciones</Text>
+                  </Td>
+
                   <Td textAlign={'center'}>
                     <ButtonGroup
                       variant='ghost'
