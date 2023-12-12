@@ -79,7 +79,7 @@ const EditCow = ({ isOpen, refresh, onClose, setRefresh }: IEditCow) => {
       await axiosConfig.put(`/cows/${id}`, cow)
       toast({
         title: 'Éxito',
-        description: 'Se ha añadido correctamente',
+        description: 'Se ha editado correctamente',
         status: 'success',
         position: 'top',
         duration: 10000,

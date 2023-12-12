@@ -19,9 +19,10 @@ import {
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import axiosConfig from '../../config/axios'
 import Layout from '../../layout'
-import CreateCow from '../../components/cows/Create'
-import EditCow from '../../components/cows/Edit'
-import DeleteCow from '../../components/cows/Delete'
+import CreateCow from '../../components/Cows/Create'
+import EditCow from '../../components/Cows/Edit'
+import DeleteCow from '../../components/Cows/Delete'
+import CowCharts from '../../components/Cows/Charts'
 
 const header = [
   'id',
@@ -95,213 +96,219 @@ const Cows = () => {
 
   return (
     <Layout>
-      <Flex
-        mx={'auto'}
-        w='full'
-        direction={'column'}
-        maxW='8xl'
-        p={50}
-        textAlign={'center'}
-        justifyContent='center'
-      >
-        {isOpenCreate && (
-          <CreateCow
-            isOpen={isOpenCreate}
-            onClose={onCloseCreate}
-            refresh={refresh}
-            setRefresh={setRefresh}
-          />
-        )}
-
-        {isOpenEdit && (
-          <EditCow
-            isOpen={isOpenEdit}
-            onClose={onCloseEdit}
-            refresh={refresh}
-            setRefresh={setRefresh}
-          />
-        )}
-
-        {isOpenDelete && (
-          <DeleteCow
-            cowId={cowId}
-            isOpen={isOpenDelete}
-            onClose={onCloseDelete}
-            refresh={refresh}
-            setRefresh={setRefresh}
-          />
-        )}
-
-        <Button
-          onClick={handleCreate}
-          w={'200px'}
-          colorScheme='green'
-          mb={'6'}
-          variant={'outline'}
-          leftIcon={<AddIcon />}
-        >
-          <Text mt={1}>Agregar nuevo</Text>
-        </Button>
-
-        <Table
+      <>
+        <CowCharts cows={cows} />
+        <Flex
+          mx={'auto'}
           w='full'
-          borderRadius={'md'}
-          bg='white'
-          shadow={'md'}
-          display={{
-            base: 'block',
-            md: 'table'
-          }}
+          direction={'column'}
+          maxW='8xl'
+          p={50}
+          pt={0}
+          textAlign={'center'}
+          justifyContent='center'
         >
-          <Thead
-            display={{
-              base: 'none',
-              md: 'table-header-group'
-            }}
+          {isOpenCreate && (
+            <CreateCow
+              isOpen={isOpenCreate}
+              onClose={onCloseCreate}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
+          )}
+
+          {isOpenEdit && (
+            <EditCow
+              isOpen={isOpenEdit}
+              onClose={onCloseEdit}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
+          )}
+
+          {isOpenDelete && (
+            <DeleteCow
+              cowId={cowId}
+              isOpen={isOpenDelete}
+              onClose={onCloseDelete}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
+          )}
+
+          <Button
+            onClick={handleCreate}
+            w={'200px'}
+            colorScheme='green'
+            mb={'6'}
+            variant={'outline'}
+            leftIcon={<AddIcon />}
           >
-            <Tr>
-              {header.map((index) => (
-                <Th
-                  key={index}
-                  textAlign={'center'}
-                >
-                  {index}
-                </Th>
-              ))}
-            </Tr>
-          </Thead>
-          <Tbody
+            <Text mt={1}>Agregar nuevo</Text>
+          </Button>
+
+          <Table
+            w='full'
+            borderRadius={'md'}
+            bg='white'
+            shadow={'md'}
             display={{
               base: 'block',
-              md: 'table-row-group'
+              md: 'table'
             }}
           >
-            {cows.map((cow, tid) => {
-              return (
-                <Tr
-                  key={tid}
-                  display={{
-                    base: 'grid',
-                    md: 'table-row'
-                  }}
-                  sx={{
-                    gridTemplateColumns: 'minmax(0px, 35%) minmax(0px, 65%)',
-                    gridGap: '10px'
-                  }}
-                >
-                  {/* Filtering _id and __v */}
-                  {Object.keys(cow)
-                    .filter(
-                      (property) => property !== '_id' && property !== '__v'
-                    )
-                    .map((property, index) => {
-                      return (
-                        <React.Fragment key={`${tid}${property}`}>
-                          <Td
-                            textAlign={'center'}
-                            display={{
-                              base: 'table-cell',
-                              md: 'none'
-                            }}
-                            sx={{
-                              textTransform: 'uppercase',
-                              color: 'gray.500',
-                              fontSize: 'xs',
-                              fontWeight: 'bold',
-                              letterSpacing: 'wider',
-                              fontFamily: 'heading'
-                            }}
-                          >
-                            {header[index]}
-                          </Td>
-                          <Td
-                            textAlign={'center'}
-                            color={'gray.500'}
-                            fontSize='md'
-                            fontWeight='hairline'
-                          >
-                            {cow[property as keyof ICow]}
-                          </Td>
-                        </React.Fragment>
-                      )
-                    })}
-                  <Td
-                    display={{
-                      base: 'table-cell',
-                      md: 'none'
-                    }}
-                    sx={{
-                      textTransform: 'uppercase',
-                      color: 'gray.500',
-                      fontSize: 'xs',
-                      fontWeight: 'bold',
-                      letterSpacing: 'wider',
-                      fontFamily: 'heading'
-                    }}
-                  >
-                    <Text textAlign={'center'}>precio total de compra ($)</Text>
-                  </Td>
-                  <Td
+            <Thead
+              display={{
+                base: 'none',
+                md: 'table-header-group'
+              }}
+            >
+              <Tr>
+                {header.map((index) => (
+                  <Th
+                    key={index}
                     textAlign={'center'}
-                    color={'gray.500'}
-                    fontSize='md'
-                    fontWeight='hairline'
                   >
-                    {(cow.purchasePrice * cow.purchaseWeight).toFixed(2)}
-                  </Td>
-
-                  <Td
+                    {index}
+                  </Th>
+                ))}
+              </Tr>
+            </Thead>
+            <Tbody
+              display={{
+                base: 'block',
+                md: 'table-row-group'
+              }}
+            >
+              {cows.map((cow, tid) => {
+                return (
+                  <Tr
+                    key={tid}
                     display={{
-                      base: 'table-cell',
-                      md: 'none'
+                      base: 'grid',
+                      md: 'table-row'
                     }}
                     sx={{
-                      textTransform: 'uppercase',
-                      color: 'gray.500',
-                      fontSize: 'xs',
-                      fontWeight: 'bold',
-                      letterSpacing: 'wider',
-                      fontFamily: 'heading'
+                      gridTemplateColumns: 'minmax(0px, 35%) minmax(0px, 65%)',
+                      gridGap: '10px'
                     }}
                   >
-                    <Text textAlign={'center'}>acciones</Text>
-                  </Td>
-
-                  <Td textAlign={'center'}>
-                    <ButtonGroup
-                      variant='ghost'
-                      size='sm'
-                      spacing={3}
+                    {/* Filtering _id and __v */}
+                    {Object.keys(cow)
+                      .filter(
+                        (property) => property !== '_id' && property !== '__v'
+                      )
+                      .map((property, index) => {
+                        return (
+                          <React.Fragment key={`${tid}${property}`}>
+                            <Td
+                              textAlign={'center'}
+                              display={{
+                                base: 'table-cell',
+                                md: 'none'
+                              }}
+                              sx={{
+                                textTransform: 'uppercase',
+                                color: 'gray.500',
+                                fontSize: 'xs',
+                                fontWeight: 'bold',
+                                letterSpacing: 'wider',
+                                fontFamily: 'heading'
+                              }}
+                            >
+                              {header[index]}
+                            </Td>
+                            <Td
+                              textAlign={'center'}
+                              color={'gray.500'}
+                              fontSize='md'
+                              fontWeight='hairline'
+                            >
+                              {cow[property as keyof ICow]}
+                            </Td>
+                          </React.Fragment>
+                        )
+                      })}
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
                     >
-                      {/* <IconButton
+                      <Text textAlign={'center'}>
+                        precio total de compra ($)
+                      </Text>
+                    </Td>
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {(cow.purchasePrice * cow.purchaseWeight).toFixed(2)}
+                    </Td>
+
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>acciones</Text>
+                    </Td>
+
+                    <Td textAlign={'center'}>
+                      <ButtonGroup
+                        variant='ghost'
+                        size='sm'
+                        spacing={3}
+                      >
+                        {/* <IconButton
                         colorScheme='green'
                         icon={<ExternalLinkIcon />}
                         aria-label='Ver mas'
                       /> */}
-                      <IconButton
-                        as={NavLink}
-                        onClick={handleEdit}
-                        to={`/cows/edit/${cow._id}`}
-                        colorScheme='blue'
-                        icon={<EditIcon />}
-                        aria-label='Editar'
-                      />
-                      <IconButton
-                        onClick={() => {
-                          handleDelete(cow._id)
-                        }}
-                        colorScheme='red'
-                        icon={<DeleteIcon />}
-                        aria-label='Eliminar'
-                      />
-                    </ButtonGroup>
-                  </Td>
-                </Tr>
-              )
-            })}
-          </Tbody>
-        </Table>
-      </Flex>
+                        <IconButton
+                          as={NavLink}
+                          onClick={handleEdit}
+                          to={`/cows/edit/${cow._id}`}
+                          colorScheme='blue'
+                          icon={<EditIcon />}
+                          aria-label='Editar'
+                        />
+                        <IconButton
+                          onClick={() => {
+                            handleDelete(cow._id)
+                          }}
+                          colorScheme='red'
+                          icon={<DeleteIcon />}
+                          aria-label='Eliminar'
+                        />
+                      </ButtonGroup>
+                    </Td>
+                  </Tr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        </Flex>
+      </>
     </Layout>
   )
 }
