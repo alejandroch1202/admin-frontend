@@ -206,7 +206,11 @@ const Cows = () => {
                     {/* Filtering _id and __v */}
                     {Object.keys(cow)
                       .filter(
-                        (property) => property !== '_id' && property !== '__v'
+                        (property) =>
+                          property !== '_id' &&
+                          property !== '__v' &&
+                          property !== 'createdAt' &&
+                          property !== 'updatedAt'
                       )
                       .map((property, index) => {
                         return (
