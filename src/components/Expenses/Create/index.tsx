@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import axiosConfig from './../../../config/axios'
 
-const CreateCow = ({
+const CreateExpense = ({
   isOpen,
   refresh,
   onClose,
@@ -24,27 +24,22 @@ const CreateCow = ({
 }: ICreateEntityModal) => {
   const toast = useToast()
   const [loading, setLoading] = useState(false)
-  const [cow, setCow] = useState({
-    identifier: '',
-    type: '',
-    purchaseWeight: '',
-    purchasePrice: ''
+  const [expense, setExpense] = useState({
+    name: '',
+    category: '',
+    cost: '',
+    quantity: ''
   })
 
   const handleChange = (
     e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>
   ) => {
-    setCow({ ...cow, [e.currentTarget.name]: e.currentTarget.value })
+    setExpense({ ...expense, [e.currentTarget.name]: e.currentTarget.value })
   }
 
   const validateForm = () => {
-    const { identifier, type, purchaseWeight, purchasePrice } = cow
-    if (
-      identifier === '' ||
-      type === '' ||
-      purchaseWeight === '' ||
-      purchasePrice === ''
-    ) {
+    const { name, category, cost, quantity } = expense
+    if (name === '' || category === '' || cost === '' || quantity === '') {
       return true
     } else {
       return false
@@ -54,7 +49,7 @@ const CreateCow = ({
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      await axiosConfig.post('/cows', cow)
+      await axiosConfig.post('/expenses', expense)
       toast({
         title: 'Éxito',
         description: 'Se ha añadido correctamente',
@@ -93,43 +88,43 @@ const CreateCow = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Identificador</FormLabel>
+            <FormLabel>Nombre</FormLabel>
             <Input
-              name='identifier'
+              name='name'
               onChange={handleChange}
-              placeholder='Identificador'
+              placeholder='Nombre'
             />
           </FormControl>
 
           <FormControl mt={4}>
-            <FormLabel>Tipo</FormLabel>
+            <FormLabel>Categoría</FormLabel>
             <Select
-              name='type'
+              name='category'
               onChange={handleChange}
               placeholder='Seleccionar'
             >
-              <option value='Negro'>Negro</option>
-              <option value='Rojo'>Rojo</option>
+              <option value='Gasolina'>Gasolina</option>
+              <option value='Otros'>Otros</option>
             </Select>
           </FormControl>
 
           <FormControl mt={4}>
-            <FormLabel>Peso de compra</FormLabel>
+            <FormLabel>Costo</FormLabel>
             <Input
-              name='purchaseWeight'
+              name='cost'
               onChange={handleChange}
               type='number'
-              placeholder='Peso de compra'
+              placeholder='Costo'
             />
           </FormControl>
 
           <FormControl mt={4}>
-            <FormLabel>Precio de compra</FormLabel>
+            <FormLabel>Cantidad</FormLabel>
             <Input
-              name='purchasePrice'
+              name='quantity'
               onChange={handleChange}
               type='number'
-              placeholder='Precio de compra'
+              placeholder='Cantidad'
             />
           </FormControl>
         </ModalBody>
@@ -152,4 +147,4 @@ const CreateCow = ({
   )
 }
 
-export default CreateCow
+export default CreateExpense

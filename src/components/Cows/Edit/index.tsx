@@ -20,14 +20,12 @@ import {
 import axiosConfig from '../../../config/axios'
 import Layout from '../../../layout'
 
-interface IEditCow {
-  isOpen: boolean
-  refresh: boolean
-  onClose: () => void
-  setRefresh: (refresh: boolean) => void
-}
-
-const EditCow = ({ isOpen, refresh, onClose, setRefresh }: IEditCow) => {
+const EditCow = ({
+  isOpen,
+  refresh,
+  onClose,
+  setRefresh
+}: ICreateEntityModal) => {
   const { id } = useParams()
   const navigate = useNavigate()
   const toast = useToast()

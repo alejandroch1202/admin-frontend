@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   Box,
@@ -18,11 +18,11 @@ import {
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import axiosConfig from '../../config/axios'
+import { AppContext } from './../../context'
 import Layout from '../../layout'
 import CreateCow from '../../components/Cows/Create'
 import EditCow from '../../components/Cows/Edit'
 import DeleteCow from '../../components/Cows/Delete'
-import CowCharts from '../../components/Cows/Charts'
 
 const header = [
   'id',
@@ -34,6 +34,9 @@ const header = [
 ]
 
 const Cows = () => {
+  const { cows, setCows } = useContext(AppContext)
+  const [cowId, setCowId] = useState('')
+  const [refresh, setRefresh] = useState(false)
   const {
     isOpen: isOpenCreate,
     onOpen: onOpenCreate,
@@ -49,9 +52,6 @@ const Cows = () => {
     onOpen: onOpenDelete,
     onClose: onCloseDelete
   } = useDisclosure()
-  const [cows, setCows] = useState<ICow[]>([])
-  const [cowId, setCowId] = useState('')
-  const [refresh, setRefresh] = useState(false)
 
   const getCows = async () => {
     const cows = await axiosConfig.get('/cows')
@@ -97,7 +97,17 @@ const Cows = () => {
   return (
     <Layout>
       <>
-        <CowCharts cows={cows} />
+        {/* Charts  */}
+        {/* <CowCharts cows={cows} /> */}
+        <Text
+          as={'h1'}
+          mt={10}
+          fontSize={'x-large'}
+          fontWeight={'bold'}
+          color={'green.700'}
+        >
+          Inventario
+        </Text>
         <Flex
           mx={'auto'}
           w='full'
@@ -128,7 +138,7 @@ const Cows = () => {
 
           {isOpenDelete && (
             <DeleteCow
-              cowId={cowId}
+              entityId={cowId}
               isOpen={isOpenDelete}
               onClose={onCloseDelete}
               refresh={refresh}
@@ -138,7 +148,7 @@ const Cows = () => {
 
           <Button
             onClick={handleCreate}
-            w={'200px'}
+            w={{ base: 'full', md: '200px' }}
             colorScheme='green'
             mb={'6'}
             variant={'outline'}

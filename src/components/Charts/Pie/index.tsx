@@ -1,10 +1,10 @@
 import { Pie } from 'react-chartjs-2'
 
-const PieChart = ({ text, chartData }: IChart) => {
+const PieChart = ({ text, size, chartData }: IChart) => {
   return (
     <div>
       <Pie
-        height={'250px'}
+        height={size ?? '250px'}
         data={chartData}
         options={{
           maintainAspectRatio: false,

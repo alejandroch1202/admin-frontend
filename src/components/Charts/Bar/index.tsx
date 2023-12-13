@@ -1,10 +1,10 @@
 import { Bar } from 'react-chartjs-2'
 
-const BarChart = ({ text, chartData }: IChart) => {
+const BarChart = ({ text, size, chartData }: IChart) => {
   return (
     <div>
       <Bar
-        height={'250px'}
+        height={size ?? '250px'}
         data={chartData}
         options={{
           responsive: true,

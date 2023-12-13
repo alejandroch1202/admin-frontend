@@ -26,7 +26,7 @@ import logo from './../../assets/logo-white.png'
 
 const Links = [
   { title: 'Panel', path: '/' },
-  { title: 'Ganado', path: '/cows' },
+  { title: 'Inventario', path: '/cows' },
   { title: 'Gastos', path: '/expenses' }
 ]
 

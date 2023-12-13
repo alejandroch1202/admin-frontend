@@ -8,6 +8,10 @@ interface ICow {
 
 interface IExpense {
   _id: string
+  name: string
+  category: stirng
+  cost: number
+  quantity: number
 }
 
 interface IUser {
@@ -25,5 +29,17 @@ interface IChartData {
 // Components
 interface IChart {
   text: string
+  size?: string
   chartData: IChartData<T>
+}
+
+interface ICreateEntityModal {
+  isOpen: boolean
+  refresh: boolean
+  onClose: () => void
+  setRefresh: (refresh: boolean) => void
+}
+
+interface IDeleteEntityModal extends ICreateEntityModal {
+  entityId: string
 }

@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import axiosConfig from './../../../config/axios'
 
-const DeleteCow = ({
+const DeleteExpense = ({
   isOpen,
   entityId,
   refresh,
@@ -26,7 +26,7 @@ const DeleteCow = ({
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      await axiosConfig.delete(`/cows/${entityId}`)
+      await axiosConfig.delete(`/expenses/${entityId}`)
       toast({
         title: 'Éxito',
         description: 'Se ha eliminado correctamente',
@@ -84,4 +84,4 @@ const DeleteCow = ({
   )
 }
 
-export default DeleteCow
+export default DeleteExpense

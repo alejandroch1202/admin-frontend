@@ -1,4 +1,5 @@
 import { useRoutes, BrowserRouter } from 'react-router-dom'
+import { AppProvider } from './context'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Cows from './pages/Cows'
@@ -11,6 +12,7 @@ const AppRoutes = () => {
     { path: '/cows', element: <Cows /> },
     { path: '/cows/edit/:id', element: <Cows /> },
     { path: '/expenses', element: <Expenses /> },
+    { path: '/expenses/edit/:id', element: <Expenses /> },
     { path: '/*', element: <NotFound /> }
   ])
   return routes
@@ -18,10 +20,12 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <AppRoutes />
-    </BrowserRouter>
+    <AppProvider>
+      <BrowserRouter>
+        <Navbar />
+        <AppRoutes />
+      </BrowserRouter>
+    </AppProvider>
   )
 }
 
