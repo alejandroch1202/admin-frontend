@@ -26,12 +26,27 @@ import DeleteCow from '../../components/Cows/Delete'
 
 const header = [
   'id',
-  'tipo',
+  'raza',
+  'peso actual (kg)',
+  'edad (meses)',
+  'fecha de compra',
   'peso de compra (kg)',
   'precio de compra ($)',
   'precio total de compra ($)',
   'acciones'
 ]
+
+const filterProperties = (property: string) => {
+  return (
+    property === 'identifier' ||
+    property === 'race' ||
+    property === 'currentWeight' ||
+    property === 'age' ||
+    property === 'purchaseDate' ||
+    property === 'purchaseWeight' ||
+    property === 'purchasePrice'
+  )
+}
 
 const Cows = () => {
   const { cows, setCows } = useContext(AppContext)
@@ -203,15 +218,9 @@ const Cows = () => {
                       gridGap: '10px'
                     }}
                   >
-                    {/* Filtering _id and __v */}
+                    {/* Filtering data */}
                     {Object.keys(cow)
-                      .filter(
-                        (property) =>
-                          property !== '_id' &&
-                          property !== '__v' &&
-                          property !== 'createdAt' &&
-                          property !== 'updatedAt'
-                      )
+                      .filter(filterProperties)
                       .map((property, index) => {
                         return (
                           <React.Fragment key={`${tid}${property}`}>
@@ -238,7 +247,11 @@ const Cows = () => {
                               fontSize='md'
                               fontWeight='hairline'
                             >
-                              {cow[property as keyof ICow]}
+                              {property === 'purchaseDate'
+                                ? new Date(
+                                    cow[property as keyof ICow]
+                                  ).toLocaleDateString()
+                                : cow[property as keyof ICow]}
                             </Td>
                           </React.Fragment>
                         )

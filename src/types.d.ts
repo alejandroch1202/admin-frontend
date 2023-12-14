@@ -1,9 +1,15 @@
 interface ICow {
   _id: string
   identifier: string
-  type: stirng
+  race: stirng
+  currentWeight: number
+  age: number
+  purchaseDate: Date
   purchaseWeight: number
   purchasePrice: number
+  sellDate: Date | null
+  sellWeight: number | null
+  sellPrice: number | null
 }
 
 interface IExpense {

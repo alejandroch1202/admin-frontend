@@ -24,29 +24,28 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
   const [chartData2, setChartData2] = useState(initialChartState)
 
   useEffect(() => {
-    const labels = [...new Set(cows.map((cow) => cow.type))]
+    const labels = [...new Set(cows.map((cow) => cow.race))]
     setChartData({
       labels,
       datasets: [
         {
-          label: 'Tipo de ganado',
+          label: 'Raza del ganado',
           data: labels.map(
-            (label) => cows.filter((cow) => cow.type === label).length
+            (label) => cows.filter((cow) => cow.race === label).length
           ),
           ...chartStyles
         }
       ]
     })
 
-    const labels2 = [...new Set(cows.map((cow) => String(cow.purchasePrice)))]
+    const labels2 = [...new Set(cows.map((cow) => String(cow.age)))]
     setChartData2({
       labels: labels2,
       datasets: [
         {
-          label: 'Precio de compra',
+          label: 'Edad del ganado',
           data: labels2.map(
-            (label) =>
-              cows.filter((cow) => cow.purchasePrice === Number(label)).length
+            (label) => cows.filter((cow) => cow.age === Number(label)).length
           ),
           ...chartStyles
         }
@@ -63,11 +62,11 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
       gap={'10'}
     >
       <PieChart
-        text={'Tipo de ganado'}
+        text={'Raza del ganado'}
         chartData={chartData}
       />
       <BarChart
-        text={'Precios de compra'}
+        text={'Edad del ganado'}
         chartData={chartData2}
       />
     </Flex>
