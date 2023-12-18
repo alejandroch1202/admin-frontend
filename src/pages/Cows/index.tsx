@@ -19,6 +19,7 @@ import {
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import axiosConfig from '../../config/axios'
 import { AppContext } from './../../context'
+import { formatDate } from '../../utils/dates'
 import Layout from '../../layout'
 import CreateCow from '../../components/Cows/Create'
 import EditCow from '../../components/Cows/Edit'
@@ -26,22 +27,18 @@ import DeleteCow from '../../components/Cows/Delete'
 
 const header = [
   'id',
-  'raza',
-  'peso actual (kg)',
-  'edad (meses)',
   'fecha de compra',
   'peso de compra (kg)',
   'precio de compra ($)',
   'precio total de compra ($)',
+  'peso actual (kg)',
+  'ganancia de peso (kg)',
   'acciones'
 ]
 
 const filterProperties = (property: string) => {
   return (
     property === 'identifier' ||
-    property === 'race' ||
-    property === 'currentWeight' ||
-    property === 'age' ||
     property === 'purchaseDate' ||
     property === 'purchaseWeight' ||
     property === 'purchasePrice'
@@ -248,10 +245,12 @@ const Cows = () => {
                               fontWeight='hairline'
                             >
                               {property === 'purchaseDate'
-                                ? new Date(
-                                    cow[property as keyof ICow]
-                                  ).toLocaleDateString()
-                                : cow[property as keyof ICow]}
+                                ? formatDate(
+                                    new Date(cow[property as keyof ICow])
+                                      .toISOString()
+                                      .split('T')[0]
+                                  )
+                                : String(cow[property as keyof ICow])}
                             </Td>
                           </React.Fragment>
                         )
@@ -274,6 +273,7 @@ const Cows = () => {
                         precio total de compra ($)
                       </Text>
                     </Td>
+
                     <Td
                       textAlign={'center'}
                       color={'gray.500'}
@@ -281,6 +281,54 @@ const Cows = () => {
                       fontWeight='hairline'
                     >
                       {(cow.purchasePrice * cow.purchaseWeight).toFixed(2)}
+                    </Td>
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>peso actual (kg)</Text>
+                    </Td>
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {cow.currentWeight}
+                    </Td>
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>ganancia de peso (kg)</Text>
+                    </Td>
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {cow.currentWeight - cow.purchaseWeight}
                     </Td>
 
                     <Td

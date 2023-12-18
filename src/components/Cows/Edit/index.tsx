@@ -13,7 +13,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Spinner,
   useToast
 } from '@chakra-ui/react'
@@ -56,14 +55,22 @@ const EditCow = ({
       return
     }
 
-    const { identifier, type, purchaseWeight, purchasePrice } = cow
+    const {
+      identifier,
+      purchaseDate,
+      purchaseWeight,
+      purchasePrice,
+      currentWeight
+    } = cow
     if (
       identifier === '' ||
-      type === '' ||
+      String(purchaseDate) === '' ||
       purchaseWeight === 0 ||
       String(purchaseWeight) === '' ||
       purchasePrice === 0 ||
-      String(purchasePrice) === ''
+      String(purchasePrice) === '' ||
+      currentWeight === 0 ||
+      String(currentWeight) === ''
     ) {
       return true
     } else {
@@ -144,7 +151,7 @@ const EditCow = ({
             />
           </FormControl>
 
-          <FormControl mt={4}>
+          {/* <FormControl mt={4}>
             <FormLabel>Tipo</FormLabel>
             <Select
               defaultValue={cow.type}
@@ -155,10 +162,27 @@ const EditCow = ({
               <option value='Negro'>Negro</option>
               <option value='Rojo'>Rojo</option>
             </Select>
+          </FormControl> */}
+
+          <FormControl mt={4}>
+            <FormLabel>Fecha de compra</FormLabel>
+            <Input
+              value={
+                String(cow.purchaseDate) !== ''
+                  ? new Date(cow.purchaseDate).toISOString().split('T')[0]
+                  : ''
+              }
+              name='purchaseDate'
+              size='md'
+              type='date'
+              max={new Date().toISOString().split('T')[0]}
+              onChange={handleChange}
+              placeholder='Fecha de compra'
+            />
           </FormControl>
 
           <FormControl mt={4}>
-            <FormLabel>Peso de compra</FormLabel>
+            <FormLabel>Peso de compra </FormLabel>
             <Input
               defaultValue={cow.purchaseWeight}
               name='purchaseWeight'
@@ -176,6 +200,17 @@ const EditCow = ({
               onChange={handleChange}
               type='number'
               placeholder='Precio de compra'
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Peso actual</FormLabel>
+            <Input
+              defaultValue={cow.currentWeight}
+              name='currentWeight'
+              onChange={handleChange}
+              type='number'
+              placeholder='Peso actual'
             />
           </FormControl>
         </ModalBody>

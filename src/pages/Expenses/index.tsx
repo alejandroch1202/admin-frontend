@@ -19,6 +19,7 @@ import {
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { AppContext } from '../../context'
 import axiosConfig from '../../config/axios'
+import { formatDate } from '../../utils/dates'
 import Layout from '../../layout'
 import CreateExpense from '../../components/Expenses/Create'
 import EditExpense from '../../components/Expenses/Edit'
@@ -235,9 +236,13 @@ const Expenses = () => {
                               fontWeight='hairline'
                             >
                               {property === 'createdAt'
-                                ? new Date(
-                                    expense[property as keyof IExpense]
-                                  ).toLocaleDateString()
+                                ? formatDate(
+                                    new Date(
+                                      expense[property as keyof IExpense]
+                                    )
+                                      .toISOString()
+                                      .split('T')[0]
+                                  )
                                 : expense[property as keyof IExpense]}
                             </Td>
                           </React.Fragment>

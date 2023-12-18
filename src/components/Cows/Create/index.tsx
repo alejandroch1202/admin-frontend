@@ -11,7 +11,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   useToast
 } from '@chakra-ui/react'
 import axiosConfig from './../../../config/axios'
@@ -26,9 +25,10 @@ const CreateCow = ({
   const [loading, setLoading] = useState(false)
   const [cow, setCow] = useState({
     identifier: '',
-    type: '',
+    purchaseDate: '',
     purchaseWeight: '',
-    purchasePrice: ''
+    purchasePrice: '',
+    currentWeight: ''
   })
 
   const handleChange = (
@@ -38,10 +38,10 @@ const CreateCow = ({
   }
 
   const validateForm = () => {
-    const { identifier, type, purchaseWeight, purchasePrice } = cow
+    const { identifier, purchaseDate, purchaseWeight, purchasePrice } = cow
     if (
       identifier === '' ||
-      type === '' ||
+      purchaseDate === '' ||
       purchaseWeight === '' ||
       purchasePrice === ''
     ) {
@@ -53,6 +53,10 @@ const CreateCow = ({
 
   const handleSubmit = async () => {
     setLoading(true)
+
+    cow.purchaseDate = new Date(cow.purchaseDate).toISOString()
+    cow.currentWeight = cow.purchaseWeight
+
     try {
       await axiosConfig.post('/cows', cow)
       toast({
@@ -101,7 +105,7 @@ const CreateCow = ({
             />
           </FormControl>
 
-          <FormControl mt={4}>
+          {/* <FormControl mt={4}>
             <FormLabel>Tipo</FormLabel>
             <Select
               name='type'
@@ -111,6 +115,18 @@ const CreateCow = ({
               <option value='Negro'>Negro</option>
               <option value='Rojo'>Rojo</option>
             </Select>
+          </FormControl> */}
+
+          <FormControl mt={4}>
+            <FormLabel>Fecha de compra</FormLabel>
+            <Input
+              name='purchaseDate'
+              size='md'
+              type='date'
+              max={new Date().toISOString().split('T')[0]}
+              onChange={handleChange}
+              placeholder='Fecha de compra'
+            />
           </FormControl>
 
           <FormControl mt={4}>
