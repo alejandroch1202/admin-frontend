@@ -26,13 +26,23 @@ import EditExpense from '../../components/Expenses/Edit'
 import DeleteExpense from '../../components/Expenses/Delete'
 
 const header = [
+  'fecha',
   'nombre',
   'categoría',
   'costo ($)',
   'cantidad',
-  'fecha',
   'acciones'
 ]
+
+const filterProperties = (property: string) => {
+  return (
+    property === 'date' ||
+    property === 'name' ||
+    property === 'category' ||
+    property === 'cost' ||
+    property === 'quantity'
+  )
+}
 
 const Expenses = () => {
   const { expenses, setExpenses } = useContext(AppContext)
@@ -203,12 +213,7 @@ const Expenses = () => {
                     }}
                   >
                     {Object.keys(expense)
-                      .filter(
-                        (property) =>
-                          property !== '_id' &&
-                          property !== '__v' &&
-                          property !== 'updatedAt'
-                      )
+                      .filter(filterProperties)
                       .map((property, index) => {
                         return (
                           <React.Fragment key={`${tid}${property}`}>
@@ -235,7 +240,7 @@ const Expenses = () => {
                               fontSize='md'
                               fontWeight='hairline'
                             >
-                              {property === 'createdAt'
+                              {property === 'date'
                                 ? formatDate(
                                     new Date(
                                       expense[property as keyof IExpense]
