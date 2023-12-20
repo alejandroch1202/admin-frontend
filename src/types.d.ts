@@ -34,6 +34,8 @@ interface IChartData {
 interface IChart {
   text: string
   size?: string
+  xLabel?: string
+  yLabel?: string
   chartData: IChartData<T>
 }
 

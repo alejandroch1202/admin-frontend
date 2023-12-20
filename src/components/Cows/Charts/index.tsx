@@ -72,10 +72,14 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
     >
       <BarChart
         text={'Precios de compra en dólares'}
+        xLabel='Precios de compra'
+        yLabel='Número de animales'
         chartData={chartData}
       />
       <BarChart
         text={'Peso actual del ganado'}
+        xLabel='Peso en Kg'
+        yLabel='Número de animales'
         chartData={chartData2}
       />
     </Flex>

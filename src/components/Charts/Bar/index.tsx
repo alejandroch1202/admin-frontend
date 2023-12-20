@@ -1,6 +1,6 @@
 import { Bar } from 'react-chartjs-2'
 
-const BarChart = ({ text, size, chartData }: IChart) => {
+const BarChart = ({ text, size, xLabel, yLabel, chartData }: IChart) => {
   return (
     <div>
       <Bar
@@ -8,6 +8,20 @@ const BarChart = ({ text, size, chartData }: IChart) => {
         data={chartData}
         options={{
           responsive: true,
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: yLabel
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: xLabel
+              }
+            }
+          },
           plugins: {
             title: {
               display: true,
