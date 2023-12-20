@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Flex } from '@chakra-ui/react'
 import Chart from 'chart.js/auto'
 import { CategoryScale } from 'chart.js'
-import PieChart from './../../../components/Charts/Pie'
 import BarChart from './../../../components/Charts/Bar'
 
 Chart.register(CategoryScale)
@@ -71,7 +70,7 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
       direction={{ base: 'column', md: 'row' }}
       gap={'10'}
     >
-      <PieChart
+      <BarChart
         text={'Precios de compra en dólares'}
         chartData={chartData}
       />

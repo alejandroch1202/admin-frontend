@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Flex } from '@chakra-ui/react'
 import Chart from 'chart.js/auto'
 import { CategoryScale } from 'chart.js'
-import PieChart from './../../../components/Charts/Pie'
+import BarChart from './../../../components/Charts/Bar'
 
 Chart.register(CategoryScale)
 
@@ -46,7 +46,7 @@ const ExpensesCharts = ({ expenses }: { expenses: IExpense[] }) => {
       direction={{ base: 'column', md: 'row' }}
       gap={'10'}
     >
-      <PieChart
+      <BarChart
         text={'Gastos por categoría'}
         chartData={chartData}
       />

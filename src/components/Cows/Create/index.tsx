@@ -100,6 +100,7 @@ const CreateCow = ({
             <FormLabel>Identificador</FormLabel>
             <Input
               name='identifier'
+              type='text'
               onChange={handleChange}
               placeholder='Identificador'
             />
