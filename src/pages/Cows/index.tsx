@@ -27,10 +27,10 @@ import DeleteCow from '../../components/Cows/Delete'
 
 const header = [
   'id',
-  'fecha de compra',
-  'peso de compra (kg)',
-  'precio de compra ($)',
-  'precio total de compra ($)',
+  'fecha',
+  'peso inicial (kg)',
+  'costo ($)',
+  'costo total ($)',
   'peso actual (kg)',
   'ganancia de peso (kg)',
   'acciones'
