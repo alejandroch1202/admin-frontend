@@ -27,10 +27,11 @@ import DeleteExpense from '../../components/Expenses/Delete'
 
 const header = [
   'fecha',
-  'nombre',
+  'descripción',
   'categoría',
   'costo ($)',
   'cantidad',
+  'total ($)',
   'acciones'
 ]
 
@@ -253,6 +254,31 @@ const Expenses = () => {
                           </React.Fragment>
                         )
                       })}
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>total ($)</Text>
+                    </Td>
+
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {(expense.cost * expense.quantity).toFixed(2)}
+                    </Td>
                     <Td
                       display={{
                         base: 'table-cell',

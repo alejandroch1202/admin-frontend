@@ -88,24 +88,27 @@ const CreateExpense = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Nombre</FormLabel>
-            <Input
-              name='name'
-              onChange={handleChange}
-              placeholder='Nombre'
-            />
-          </FormControl>
-
-          <FormControl mt={4}>
             <FormLabel>Categoría</FormLabel>
             <Select
               name='category'
               onChange={handleChange}
               placeholder='Seleccionar'
             >
-              <option value='Gasolina'>Gasolina</option>
+              <option value='Medicinas'>Medicinas</option>
+              <option value='Transporte'>Transporte</option>
+              <option value='Alimentos'>Alimentos</option>
+              <option value='Imprevistos'>Imprevistos</option>
               <option value='Otros'>Otros</option>
             </Select>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Descripción</FormLabel>
+            <Input
+              name='name'
+              onChange={handleChange}
+              placeholder='Descripción'
+            />
           </FormControl>
 
           <FormControl mt={4}>
