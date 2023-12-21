@@ -27,10 +27,14 @@ const ExpensesCharts = ({ expenses }: { expenses: IExpense[] }) => {
       labels,
       datasets: [
         {
-          label: 'Gastos',
-          data: labels.map(
-            (label) =>
-              expenses.filter((expense) => expense.category === label).length
+          label: 'Gasto total ($)',
+          data: labels.map((label) =>
+            expenses.reduce((acc, expense) => {
+              if (expense.category === label) {
+                return acc + expense.cost * expense.quantity
+              }
+              return acc
+            }, 0)
           ),
           ...chartStyles
         }
@@ -47,9 +51,9 @@ const ExpensesCharts = ({ expenses }: { expenses: IExpense[] }) => {
       gap={'10'}
     >
       <BarChart
-        text={'Gastos por categoría'}
-        xLabel='Número de gastos'
-        yLabel='Gastos por categoría'
+        text={'Gastos totales por categoría'}
+        xLabel=''
+        yLabel='Gasto total ($)'
         chartData={chartData}
       />
     </Flex>

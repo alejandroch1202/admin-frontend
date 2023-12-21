@@ -31,31 +31,31 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
   const [chartData2, setChartData2] = useState(initialChartState)
 
   useEffect(() => {
-    const labels = [...new Set(cows.map((cow) => String(cow.purchasePrice)))]
-    setChartData({
-      labels,
+    const labels2 = [...new Set(cows.map((cow) => String(cow.currentWeight)))]
+    setChartData2({
+      labels: labels2,
       datasets: [
         {
-          label: 'Precios de compra en dólares',
-          data: labels.map(
+          label: 'Número de animales',
+          data: labels2.map(
             (label) =>
-              cows.filter((cow) => String(cow.purchasePrice) === label).length
+              cows.filter((cow) => cow.currentWeight === Number(label)).length
           ),
           ...chartStyles
         }
       ]
     })
 
-    const labels2 = [...new Set(cows.map((cow) => String(cow.currentWeight)))]
-    setChartData2({
-      labels: labels2,
+    const labels = ['Peso total inicial', 'Peso total actual']
+    setChartData({
+      labels,
       datasets: [
         {
-          label: 'Peso actual del ganado',
-          data: labels2.map(
-            (label) =>
-              cows.filter((cow) => cow.currentWeight === Number(label)).length
-          ),
+          label: 'Peso',
+          data: [
+            cows.reduce((acc, cow) => acc + cow.purchaseWeight, 0),
+            cows.reduce((acc, cow) => acc + cow.currentWeight, 0)
+          ],
           ...chartStyles
         }
       ]
@@ -71,16 +71,16 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
       gap={'10'}
     >
       <BarChart
-        text={'Precios de compra en dólares'}
-        xLabel='Precios de compra'
-        yLabel='Número de animales'
-        chartData={chartData}
-      />
-      <BarChart
         text={'Peso actual del ganado'}
-        xLabel='Peso en Kg'
+        xLabel='Peso en (kg)'
         yLabel='Número de animales'
         chartData={chartData2}
+      />
+      <BarChart
+        text={'Peso de engorde'}
+        xLabel=''
+        yLabel='Peso total en (kg)'
+        chartData={chartData}
       />
     </Flex>
   )
