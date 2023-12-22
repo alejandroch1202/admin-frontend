@@ -26,13 +26,14 @@ import EditCow from '../../components/Cows/Edit'
 import DeleteCow from '../../components/Cows/Delete'
 
 const header = [
-  'id',
+  'código',
   'fecha',
   'peso inicial (kg)',
   'costo ($)',
   'costo total ($)',
   'peso actual (kg)',
   'ganancia de peso (kg)',
+  'inversión ($)',
   'acciones'
 ]
 
@@ -46,7 +47,8 @@ const filterProperties = (property: string) => {
 }
 
 const Cows = () => {
-  const { cows, setCows } = useContext(AppContext)
+  const { cows, setCows, expenses, setExpenses } = useContext(AppContext)
+  const [investmentByAnimal, setInvestmentByAnimal] = useState(0)
   const [cowId, setCowId] = useState('')
   const [refresh, setRefresh] = useState(false)
   const {
@@ -70,6 +72,11 @@ const Cows = () => {
     setCows(cows.data.data)
   }
 
+  const getExpenses = async () => {
+    const expenses = await axiosConfig.get('/expenses')
+    setExpenses(expenses.data.data)
+  }
+
   const handleCreate = () => {
     onOpenCreate()
   }
@@ -86,12 +93,25 @@ const Cows = () => {
   useEffect(() => {
     try {
       getCows()
+      getExpenses()
     } catch (error) {
       console.log(error)
     }
   }, [refresh])
 
-  if (cows.length === 0) {
+  // TODO: Move to Context
+  useEffect(() => {
+    try {
+      const totalExpenses = expenses.reduce((acc, expense) => {
+        return acc + expense.cost * expense.quantity
+      }, 0)
+      setInvestmentByAnimal(totalExpenses / (cows.length + 1))
+    } catch (error) {
+      console.log(error)
+    }
+  }, [cows, expenses])
+
+  if (cows.length === 0 || investmentByAnimal === 0) {
     return (
       <Layout>
         <Box mt={'40'}>
@@ -114,6 +134,7 @@ const Cows = () => {
         <Text
           as={'h1'}
           mt={10}
+          mb={'8'}
           fontSize={'x-large'}
           fontWeight={'bold'}
           color={'green.700'}
@@ -329,6 +350,31 @@ const Cows = () => {
                       fontWeight='hairline'
                     >
                       {cow.currentWeight - cow.purchaseWeight}
+                    </Td>
+
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>inversión ($)</Text>
+                    </Td>
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {investmentByAnimal}
                     </Td>
 
                     <Td

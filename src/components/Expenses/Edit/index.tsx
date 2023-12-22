@@ -15,12 +15,15 @@ import {
   ModalOverlay,
   Select,
   Spinner,
+  Text,
+  useDisclosure,
   useToast
 } from '@chakra-ui/react'
 import axiosConfig from './../../../config/axios'
 import Layout from './../../../layout'
 
 const EditExpense = ({
+  categories,
   isOpen,
   refresh,
   onClose,
@@ -31,6 +34,11 @@ const EditExpense = ({
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [expense, setExpense] = useState<IExpense>()
+  const {
+    isOpen: isOpenConfirm,
+    onOpen: onOpenConfirm,
+    onClose: onCloseConfirm
+  } = useDisclosure()
 
   const getExpense = async () => {
     const expense = await axiosConfig.get(`/expenses/${id}`)
@@ -56,10 +64,11 @@ const EditExpense = ({
       return
     }
 
-    const { name, category, cost, quantity } = expense
+    const { date, category, name, cost, quantity } = expense
     if (
-      name === '' ||
+      String(date) === '' ||
       category === '' ||
+      name === '' ||
       cost === 0 ||
       String(cost) === '' ||
       quantity === 0 ||
@@ -135,12 +144,19 @@ const EditExpense = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Identificador</FormLabel>
+            <FormLabel>Fecha</FormLabel>
             <Input
-              defaultValue={expense.name}
-              name='name'
+              value={
+                String(expense.date) !== ''
+                  ? new Date(expense.date).toISOString().split('T')[0]
+                  : ''
+              }
+              name='date'
+              size='md'
+              type='date'
+              max={new Date().toISOString().split('T')[0]}
               onChange={handleChange}
-              placeholder='Identificador'
+              placeholder='Fecha'
             />
           </FormControl>
 
@@ -152,9 +168,27 @@ const EditExpense = ({
               onChange={handleChange}
               placeholder='Seleccionar'
             >
-              <option value='Gasolina'>Gasolina</option>
-              <option value='Otros'>Otros</option>
+              {categories !== undefined
+                ? categories.map((category: any) => (
+                    <option
+                      key={category._id}
+                      value={category.name}
+                    >
+                      {category.name}
+                    </option>
+                  ))
+                : ''}
             </Select>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Descripción</FormLabel>
+            <Input
+              defaultValue={expense.name}
+              name='name'
+              onChange={handleChange}
+              placeholder='Descripción'
+            />
           </FormControl>
 
           <FormControl mt={4}>
@@ -178,6 +212,33 @@ const EditExpense = ({
               placeholder='Cantidad'
             />
           </FormControl>
+
+          <Modal
+            isOpen={isOpenConfirm}
+            onClose={onCloseConfirm}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Guardar cambios</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                <Text>¿Seguro que quires guardar los cambios?</Text>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button
+                  type='submit'
+                  isLoading={loading}
+                  onClick={handleSubmit}
+                  colorScheme='green'
+                  mr={3}
+                >
+                  Guardar
+                </Button>
+                <Button onClick={onCloseConfirm}>Cancelar</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </ModalBody>
 
         <ModalFooter>
@@ -185,7 +246,7 @@ const EditExpense = ({
             type='submit'
             isDisabled={validateForm()}
             isLoading={loading}
-            onClick={handleSubmit}
+            onClick={onOpenConfirm}
             colorScheme='green'
             mr={3}
           >

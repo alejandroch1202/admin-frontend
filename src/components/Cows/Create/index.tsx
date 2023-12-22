@@ -97,12 +97,12 @@ const CreateCow = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Identificador</FormLabel>
+            <FormLabel>Código</FormLabel>
             <Input
               name='identifier'
               type='text'
               onChange={handleChange}
-              placeholder='Identificador'
+              placeholder='Código'
             />
           </FormControl>
 

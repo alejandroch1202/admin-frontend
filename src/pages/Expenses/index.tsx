@@ -17,13 +17,14 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { AppContext } from '../../context'
-import axiosConfig from '../../config/axios'
-import { formatDate } from '../../utils/dates'
-import Layout from '../../layout'
-import CreateExpense from '../../components/Expenses/Create'
-import EditExpense from '../../components/Expenses/Edit'
-import DeleteExpense from '../../components/Expenses/Delete'
+import { AppContext } from './../../context'
+import axiosConfig from './../../config/axios'
+import { formatDate } from './../../utils/dates'
+import Layout from './../../layout'
+import CreateExpense from './../../components/Expenses/Create'
+import EditExpense from './../../components/Expenses/Edit'
+import DeleteExpense from './../../components/Expenses/Delete'
+import CreateCategory from './../../components/Expenses/Category/Create'
 
 const header = [
   'fecha',
@@ -47,6 +48,7 @@ const filterProperties = (property: string) => {
 
 const Expenses = () => {
   const { expenses, setExpenses } = useContext(AppContext)
+  const [categories, setCategories] = useState([])
   const [expenseId, setExpenseId] = useState('')
   const [refresh, setRefresh] = useState(false)
   const {
@@ -64,10 +66,20 @@ const Expenses = () => {
     onOpen: onOpenDelete,
     onClose: onCloseDelete
   } = useDisclosure()
+  const {
+    isOpen: isOpenCategory,
+    onOpen: onOpenCategory,
+    onClose: onCloseCategory
+  } = useDisclosure()
 
   const getExpenses = async () => {
     const expenses = await axiosConfig.get('/expenses')
     setExpenses(expenses.data.data)
+  }
+
+  const getCategories = async () => {
+    const categories = await axiosConfig.get('/expenses/categories')
+    setCategories(categories.data.data)
   }
 
   const handleCreate = () => {
@@ -86,6 +98,7 @@ const Expenses = () => {
   useEffect(() => {
     try {
       getExpenses()
+      getCategories()
     } catch (error) {
       console.log(error)
     }
@@ -112,6 +125,7 @@ const Expenses = () => {
         <Text
           as={'h1'}
           mt={10}
+          mb={'8'}
           fontSize={'x-large'}
           fontWeight={'bold'}
           color={'green.700'}
@@ -130,6 +144,7 @@ const Expenses = () => {
         >
           {isOpenCreate && (
             <CreateExpense
+              categories={categories}
               isOpen={isOpenCreate}
               onClose={onCloseCreate}
               refresh={refresh}
@@ -139,6 +154,7 @@ const Expenses = () => {
 
           {isOpenEdit && (
             <EditExpense
+              categories={categories}
               isOpen={isOpenEdit}
               onClose={onCloseEdit}
               refresh={refresh}
@@ -156,16 +172,41 @@ const Expenses = () => {
             />
           )}
 
-          <Button
-            onClick={handleCreate}
-            w={{ base: 'full', md: '200px' }}
-            colorScheme='green'
-            mb={'6'}
-            variant={'outline'}
-            leftIcon={<AddIcon />}
+          {isOpenCategory && (
+            <CreateCategory
+              isOpen={isOpenCategory}
+              onClose={onCloseCategory}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
+          )}
+
+          <ButtonGroup
+            flexDirection={{ base: 'column', md: 'row' }}
+            spacing={{ base: 0, md: 6 }}
           >
-            <Text mt={1}>Agregar nuevo</Text>
-          </Button>
+            <Button
+              onClick={handleCreate}
+              w={{ base: 'full', md: '200px' }}
+              colorScheme='green'
+              mb={'6'}
+              variant={'outline'}
+              leftIcon={<AddIcon />}
+            >
+              <Text mt={1}>Agregar nuevo</Text>
+            </Button>
+
+            <Button
+              onClick={onOpenCategory}
+              w={{ base: 'full', md: '230px' }}
+              colorScheme='blue'
+              mb={'6'}
+              variant={'outline'}
+              leftIcon={<EditIcon />}
+            >
+              <Text mt={1}>Agregar categoría</Text>
+            </Button>
+          </ButtonGroup>
 
           <Table
             w='full'

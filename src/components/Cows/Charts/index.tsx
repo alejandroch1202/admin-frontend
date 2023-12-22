@@ -13,9 +13,9 @@ const initialChartState = {
 
 const chartStyles = {
   backgroundColor: [
-    '#38A169',
     '#ecf0f1',
     '#3182CE',
+    '#38A169',
     '#f3ba2f',
     '#C53030',
     '#8B6050',
@@ -28,23 +28,23 @@ const chartStyles = {
 
 const CowCharts = ({ cows }: { cows: ICow[] }) => {
   const [chartData, setChartData] = useState(initialChartState)
-  const [chartData2, setChartData2] = useState(initialChartState)
+  // const [chartData2, setChartData2] = useState(initialChartState)
 
   useEffect(() => {
-    const labels2 = [...new Set(cows.map((cow) => String(cow.currentWeight)))]
-    setChartData2({
-      labels: labels2,
-      datasets: [
-        {
-          label: 'Número de animales',
-          data: labels2.map(
-            (label) =>
-              cows.filter((cow) => cow.currentWeight === Number(label)).length
-          ),
-          ...chartStyles
-        }
-      ]
-    })
+    // const labels2 = [...new Set(cows.map((cow) => String(cow.currentWeight)))]
+    // setChartData2({
+    //   labels: labels2,
+    //   datasets: [
+    //     {
+    //       label: 'Número de animales',
+    //       data: labels2.map(
+    //         (label) =>
+    //           cows.filter((cow) => cow.currentWeight === Number(label)).length
+    //       ),
+    //       ...chartStyles
+    //     }
+    //   ]
+    // })
 
     const labels = ['Peso total inicial', 'Peso total actual']
     setChartData({
@@ -70,12 +70,12 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
       direction={{ base: 'column', md: 'row' }}
       gap={'10'}
     >
-      <BarChart
+      {/* <BarChart
         text={'Peso actual del ganado'}
         xLabel='Peso en (kg)'
         yLabel='Número de animales'
         chartData={chartData2}
-      />
+      /> */}
       <BarChart
         text={'Peso de engorde'}
         xLabel=''

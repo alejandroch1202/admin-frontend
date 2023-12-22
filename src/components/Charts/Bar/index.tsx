@@ -4,7 +4,8 @@ const BarChart = ({ text, size, xLabel, yLabel, chartData }: IChart) => {
   return (
     <div>
       <Bar
-        height={size ?? '250px'}
+        height={size ?? '300px'}
+        width={size ?? '400px'}
         data={chartData}
         options={{
           responsive: true,
@@ -12,20 +13,34 @@ const BarChart = ({ text, size, xLabel, yLabel, chartData }: IChart) => {
             y: {
               title: {
                 display: true,
-                text: yLabel
+                text: yLabel,
+                font: {
+                  size: 15
+                }
               }
             },
             x: {
+              ticks: {
+                font: {
+                  size: 15
+                }
+              },
               title: {
                 display: true,
-                text: xLabel
+                text: xLabel,
+                font: {
+                  size: 15
+                }
               }
             }
           },
           plugins: {
             title: {
               display: true,
-              text
+              text,
+              font: {
+                size: 16
+              }
             },
             legend: {
               display: false

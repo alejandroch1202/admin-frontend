@@ -12,8 +12,9 @@ interface ICow {
 
 interface IExpense {
   _id: string
-  name: string
+  date: Date
   category: stirng
+  name: string
   cost: number
   quantity: number
 }
@@ -40,6 +41,7 @@ interface IChart {
 }
 
 interface ICreateEntityModal {
+  categories?: string[]
   isOpen: boolean
   refresh: boolean
   onClose: () => void

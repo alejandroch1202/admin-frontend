@@ -12,7 +12,7 @@ const initialChartState = {
 }
 
 const chartStyles = {
-  backgroundColor: ['#38A169', '#ecf0f1', '#3182CE', '#f3ba2f', '#C53030'],
+  backgroundColor: ['#38A169', '#ecf0f1', '#f3ba2f', '#C53030', '#3182CE'],
   borderColor: '#A0AEC0',
   borderRadius: 2,
   borderWidth: 1

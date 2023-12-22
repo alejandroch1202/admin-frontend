@@ -25,7 +25,7 @@ import {
 import logo from './../../assets/logo-white.png'
 
 const Links = [
-  { title: 'Panel', path: '/' },
+  { title: 'Resumen', path: '/' },
   { title: 'Inventario', path: '/cows' },
   { title: 'Gastos', path: '/expenses' }
 ]
@@ -71,10 +71,10 @@ const Navbar = () => {
         <IconButton
           size={'md'}
           colorScheme='green'
-          icon={isOpen === true ? <CloseIcon /> : <HamburgerIcon />}
+          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
           aria-label={'Open Menu'}
           display={{ md: 'none' }}
-          onClick={isOpen === true ? onClose : onOpen}
+          onClick={isOpen ? onClose : onOpen}
         />
         <HStack
           spacing={8}
@@ -148,7 +148,7 @@ const Navbar = () => {
         </Flex>
       </Flex>
 
-      {isOpen === true ? (
+      {isOpen ? (
         <Box
           pb={4}
           display={{ md: 'none' }}

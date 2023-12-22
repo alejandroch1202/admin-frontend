@@ -33,15 +33,20 @@ const Home = () => {
           as={'h1'}
           textAlign={'center'}
           mt={10}
-          mb={'5'}
+          mb={'8'}
           fontSize={'x-large'}
           fontWeight={'bold'}
           color={'green.700'}
         >
-          Panel
+          Resumen
         </Text>
-        <CowsCharts cows={cows} />
-        <ExpensesCharts expenses={expenses} />
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          gap={{ base: 14, md: 28 }}
+        >
+          <CowsCharts cows={cows} />
+          <ExpensesCharts expenses={expenses} />
+        </Flex>
       </Flex>
     </Layout>
   )

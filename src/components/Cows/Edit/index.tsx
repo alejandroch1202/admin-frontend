@@ -14,6 +14,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Text,
+  useDisclosure,
   useToast
 } from '@chakra-ui/react'
 import axiosConfig from '../../../config/axios'
@@ -30,6 +32,11 @@ const EditCow = ({
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [cow, setCow] = useState<ICow>()
+  const {
+    isOpen: isOpenConfirm,
+    onOpen: onOpenConfirm,
+    onClose: onCloseConfirm
+  } = useDisclosure()
 
   const getCow = async () => {
     const cow = await axiosConfig.get(`/cows/${id}`)
@@ -142,12 +149,12 @@ const EditCow = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Identificador</FormLabel>
+            <FormLabel>Código</FormLabel>
             <Input
               defaultValue={cow.identifier}
               name='identifier'
               onChange={handleChange}
-              placeholder='Identificador'
+              placeholder='Código'
             />
           </FormControl>
 
@@ -213,6 +220,33 @@ const EditCow = ({
               placeholder='Peso actual'
             />
           </FormControl>
+
+          <Modal
+            isOpen={isOpenConfirm}
+            onClose={onCloseConfirm}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Guardar cambios</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                <Text>¿Seguro que quires guardar los cambios?</Text>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button
+                  type='submit'
+                  isLoading={loading}
+                  onClick={handleSubmit}
+                  colorScheme='green'
+                  mr={3}
+                >
+                  Guardar
+                </Button>
+                <Button onClick={onCloseConfirm}>Cancelar</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </ModalBody>
 
         <ModalFooter>
@@ -220,7 +254,7 @@ const EditCow = ({
             type='submit'
             isDisabled={validateForm()}
             isLoading={loading}
-            onClick={handleSubmit}
+            onClick={onOpenConfirm}
             colorScheme='green'
             mr={3}
           >
