@@ -24,9 +24,9 @@ const CreateCow = ({
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [cow, setCow] = useState({
-    identifier: '',
-    purchaseDate: '',
-    purchaseWeight: '',
+    date: '',
+    code: '',
+    initialWeight: '',
     purchasePrice: '',
     currentWeight: ''
   })
@@ -38,11 +38,11 @@ const CreateCow = ({
   }
 
   const validateForm = () => {
-    const { identifier, purchaseDate, purchaseWeight, purchasePrice } = cow
+    const { date, code, initialWeight, purchasePrice } = cow
     if (
-      identifier === '' ||
-      purchaseDate === '' ||
-      purchaseWeight === '' ||
+      date === '' ||
+      code === '' ||
+      initialWeight === '' ||
       purchasePrice === ''
     ) {
       return true
@@ -54,8 +54,8 @@ const CreateCow = ({
   const handleSubmit = async () => {
     setLoading(true)
 
-    cow.purchaseDate = new Date(cow.purchaseDate).toISOString()
-    cow.currentWeight = cow.purchaseWeight
+    cow.date = new Date(cow.date).toISOString()
+    cow.currentWeight = cow.initialWeight
 
     try {
       await axiosConfig.post('/cows', cow)
@@ -96,16 +96,6 @@ const CreateCow = ({
         <ModalHeader>Agregar nuevo</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl>
-            <FormLabel>Código</FormLabel>
-            <Input
-              name='identifier'
-              type='text'
-              onChange={handleChange}
-              placeholder='Código'
-            />
-          </FormControl>
-
           {/* <FormControl mt={4}>
             <FormLabel>Tipo</FormLabel>
             <Select
@@ -118,10 +108,10 @@ const CreateCow = ({
             </Select>
           </FormControl> */}
 
-          <FormControl mt={4}>
+          <FormControl>
             <FormLabel>Fecha de compra</FormLabel>
             <Input
-              name='purchaseDate'
+              name='date'
               size='md'
               type='date'
               max={new Date().toISOString().split('T')[0]}
@@ -131,9 +121,19 @@ const CreateCow = ({
           </FormControl>
 
           <FormControl mt={4}>
+            <FormLabel>Código</FormLabel>
+            <Input
+              name='code'
+              type='text'
+              onChange={handleChange}
+              placeholder='Código'
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
             <FormLabel>Peso de compra</FormLabel>
             <Input
-              name='purchaseWeight'
+              name='initialWeight'
               onChange={handleChange}
               type='number'
               placeholder='Peso de compra'

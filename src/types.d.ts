@@ -1,10 +1,10 @@
 interface ICow {
   _id: string
-  identifier: string
-  currentWeight: number
-  purchaseDate: Date
-  purchaseWeight: number
+  date: Date
+  code: string
+  initialWeight: number
   purchasePrice: number
+  currentWeight: number
   sellDate: Date
   sellWeight: number
   sellPrice: number
@@ -14,7 +14,7 @@ interface IExpense {
   _id: string
   date: Date
   category: stirng
-  name: string
+  description: string
   cost: number
   quantity: number
 }

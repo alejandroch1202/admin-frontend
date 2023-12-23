@@ -27,7 +27,7 @@ const CreateExpense = ({
   const [loading, setLoading] = useState(false)
   const [expense, setExpense] = useState({
     date: '',
-    name: '',
+    description: '',
     category: '',
     cost: '',
     quantity: ''
@@ -40,11 +40,11 @@ const CreateExpense = ({
   }
 
   const validateForm = () => {
-    const { date, name, category, cost, quantity } = expense
+    const { date, category, description, cost, quantity } = expense
     if (
       date === '' ||
-      name === '' ||
       category === '' ||
+      description === '' ||
       cost === '' ||
       quantity === ''
     ) {
@@ -130,7 +130,7 @@ const CreateExpense = ({
           <FormControl mt={4}>
             <FormLabel>Descripción</FormLabel>
             <Input
-              name='name'
+              name='description'
               onChange={handleChange}
               placeholder='Descripción'
             />

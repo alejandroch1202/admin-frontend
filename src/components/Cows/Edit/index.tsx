@@ -62,18 +62,12 @@ const EditCow = ({
       return
     }
 
-    const {
-      identifier,
-      purchaseDate,
-      purchaseWeight,
-      purchasePrice,
-      currentWeight
-    } = cow
+    const { code, date, initialWeight, purchasePrice, currentWeight } = cow
     if (
-      identifier === '' ||
-      String(purchaseDate) === '' ||
-      purchaseWeight === 0 ||
-      String(purchaseWeight) === '' ||
+      String(date) === '' ||
+      code === '' ||
+      initialWeight === 0 ||
+      String(initialWeight) === '' ||
       purchasePrice === 0 ||
       String(purchasePrice) === '' ||
       currentWeight === 0 ||
@@ -148,16 +142,6 @@ const EditCow = ({
         <ModalHeader>Actualizar información</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl>
-            <FormLabel>Código</FormLabel>
-            <Input
-              defaultValue={cow.identifier}
-              name='identifier'
-              onChange={handleChange}
-              placeholder='Código'
-            />
-          </FormControl>
-
           {/* <FormControl mt={4}>
             <FormLabel>Tipo</FormLabel>
             <Select
@@ -171,15 +155,15 @@ const EditCow = ({
             </Select>
           </FormControl> */}
 
-          <FormControl mt={4}>
+          <FormControl>
             <FormLabel>Fecha de compra</FormLabel>
             <Input
               value={
-                String(cow.purchaseDate) !== ''
-                  ? new Date(cow.purchaseDate).toISOString().split('T')[0]
+                String(cow.date) !== ''
+                  ? new Date(cow.date).toISOString().split('T')[0]
                   : ''
               }
-              name='purchaseDate'
+              name='date'
               size='md'
               type='date'
               max={new Date().toISOString().split('T')[0]}
@@ -189,10 +173,20 @@ const EditCow = ({
           </FormControl>
 
           <FormControl mt={4}>
+            <FormLabel>Código</FormLabel>
+            <Input
+              defaultValue={cow.code}
+              name='code'
+              onChange={handleChange}
+              placeholder='Código'
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
             <FormLabel>Peso de compra </FormLabel>
             <Input
-              defaultValue={cow.purchaseWeight}
-              name='purchaseWeight'
+              defaultValue={cow.initialWeight}
+              name='initialWeight'
               onChange={handleChange}
               type='number'
               placeholder='Peso de compra'

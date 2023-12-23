@@ -26,8 +26,8 @@ import EditCow from '../../components/Cows/Edit'
 import DeleteCow from '../../components/Cows/Delete'
 
 const header = [
-  'código',
   'fecha',
+  'código',
   'peso inicial (kg)',
   'costo ($)',
   'costo total ($)',
@@ -39,9 +39,9 @@ const header = [
 
 const filterProperties = (property: string) => {
   return (
-    property === 'identifier' ||
-    property === 'purchaseDate' ||
-    property === 'purchaseWeight' ||
+    property === 'date' ||
+    property === 'code' ||
+    property === 'initialWeight' ||
     property === 'purchasePrice'
   )
 }
@@ -187,7 +187,7 @@ const Cows = () => {
             variant={'outline'}
             leftIcon={<AddIcon />}
           >
-            <Text mt={1}>Agregar nuevo</Text>
+            <Text>Agregar nuevo</Text>
           </Button>
 
           <Table
@@ -265,7 +265,7 @@ const Cows = () => {
                               fontSize='md'
                               fontWeight='hairline'
                             >
-                              {property === 'purchaseDate'
+                              {property === 'date'
                                 ? formatDate(
                                     new Date(cow[property as keyof ICow])
                                       .toISOString()
@@ -301,7 +301,7 @@ const Cows = () => {
                       fontSize='md'
                       fontWeight='hairline'
                     >
-                      {(cow.purchasePrice * cow.purchaseWeight).toFixed(2)}
+                      {(cow.purchasePrice * cow.initialWeight).toFixed(2)}
                     </Td>
                     <Td
                       display={{
@@ -349,7 +349,7 @@ const Cows = () => {
                       fontSize='md'
                       fontWeight='hairline'
                     >
-                      {cow.currentWeight - cow.purchaseWeight}
+                      {cow.currentWeight - cow.initialWeight}
                     </Td>
 
                     <Td
@@ -374,7 +374,7 @@ const Cows = () => {
                       fontSize='md'
                       fontWeight='hairline'
                     >
-                      {investmentByAnimal}
+                      {investmentByAnimal.toFixed(2)}
                     </Td>
 
                     <Td

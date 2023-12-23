@@ -53,7 +53,7 @@ const CowCharts = ({ cows }: { cows: ICow[] }) => {
         {
           label: 'Peso',
           data: [
-            cows.reduce((acc, cow) => acc + cow.purchaseWeight, 0),
+            cows.reduce((acc, cow) => acc + cow.initialWeight, 0),
             cows.reduce((acc, cow) => acc + cow.currentWeight, 0)
           ],
           ...chartStyles

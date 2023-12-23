@@ -64,11 +64,11 @@ const EditExpense = ({
       return
     }
 
-    const { date, category, name, cost, quantity } = expense
+    const { date, category, description, cost, quantity } = expense
     if (
       String(date) === '' ||
       category === '' ||
-      name === '' ||
+      description === '' ||
       cost === 0 ||
       String(cost) === '' ||
       quantity === 0 ||
@@ -184,8 +184,8 @@ const EditExpense = ({
           <FormControl mt={4}>
             <FormLabel>Descripción</FormLabel>
             <Input
-              defaultValue={expense.name}
-              name='name'
+              defaultValue={expense.description}
+              name='description'
               onChange={handleChange}
               placeholder='Descripción'
             />

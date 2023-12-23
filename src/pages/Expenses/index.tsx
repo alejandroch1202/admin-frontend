@@ -28,8 +28,8 @@ import CreateCategory from './../../components/Expenses/Category/Create'
 
 const header = [
   'fecha',
-  'descripción',
   'categoría',
+  'descripción',
   'costo ($)',
   'cantidad',
   'total ($)',
@@ -39,8 +39,8 @@ const header = [
 const filterProperties = (property: string) => {
   return (
     property === 'date' ||
-    property === 'name' ||
     property === 'category' ||
+    property === 'description' ||
     property === 'cost' ||
     property === 'quantity'
   )
@@ -193,7 +193,7 @@ const Expenses = () => {
               variant={'outline'}
               leftIcon={<AddIcon />}
             >
-              <Text mt={1}>Agregar nuevo</Text>
+              <Text>Agregar nuevo</Text>
             </Button>
 
             <Button
@@ -204,7 +204,7 @@ const Expenses = () => {
               variant={'outline'}
               leftIcon={<EditIcon />}
             >
-              <Text mt={1}>Agregar categoría</Text>
+              <Text>Agregar categoría</Text>
             </Button>
           </ButtonGroup>
 
