@@ -17,6 +17,7 @@ import {
 import axiosConfig from './../../../config/axios'
 
 const CreateExpense = ({
+  categories,
   isOpen,
   refresh,
   onClose,
@@ -25,7 +26,8 @@ const CreateExpense = ({
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [expense, setExpense] = useState({
-    name: '',
+    date: '',
+    description: '',
     category: '',
     cost: '',
     quantity: ''
@@ -38,8 +40,14 @@ const CreateExpense = ({
   }
 
   const validateForm = () => {
-    const { name, category, cost, quantity } = expense
-    if (name === '' || category === '' || cost === '' || quantity === '') {
+    const { date, category, description, cost, quantity } = expense
+    if (
+      date === '' ||
+      category === '' ||
+      description === '' ||
+      cost === '' ||
+      quantity === ''
+    ) {
       return true
     } else {
       return false
@@ -88,11 +96,14 @@ const CreateExpense = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Nombre</FormLabel>
+            <FormLabel>Fecha</FormLabel>
             <Input
-              name='name'
+              name='date'
+              size='md'
+              type='date'
+              max={new Date().toISOString().split('T')[0]}
               onChange={handleChange}
-              placeholder='Nombre'
+              placeholder='Fecha'
             />
           </FormControl>
 
@@ -103,9 +114,26 @@ const CreateExpense = ({
               onChange={handleChange}
               placeholder='Seleccionar'
             >
-              <option value='Gasolina'>Gasolina</option>
-              <option value='Otros'>Otros</option>
+              {categories !== undefined
+                ? categories.map((category: any) => (
+                    <option
+                      key={category._id}
+                      value={category.name}
+                    >
+                      {category.name}
+                    </option>
+                  ))
+                : ''}
             </Select>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Descripción</FormLabel>
+            <Input
+              name='description'
+              onChange={handleChange}
+              placeholder='Descripción'
+            />
           </FormControl>
 
           <FormControl mt={4}>

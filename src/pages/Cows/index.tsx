@@ -19,22 +19,36 @@ import {
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import axiosConfig from '../../config/axios'
 import { AppContext } from './../../context'
+import { formatDate } from '../../utils/dates'
 import Layout from '../../layout'
 import CreateCow from '../../components/Cows/Create'
 import EditCow from '../../components/Cows/Edit'
 import DeleteCow from '../../components/Cows/Delete'
 
 const header = [
-  'id',
-  'tipo',
-  'peso de compra (kg)',
-  'precio de compra ($)',
-  'precio total de compra ($)',
+  'fecha',
+  'código',
+  'peso inicial (kg)',
+  'costo ($)',
+  'costo total ($)',
+  'peso actual (kg)',
+  'ganancia de peso (kg)',
+  'inversión ($)',
   'acciones'
 ]
 
+const filterProperties = (property: string) => {
+  return (
+    property === 'date' ||
+    property === 'code' ||
+    property === 'initialWeight' ||
+    property === 'purchasePrice'
+  )
+}
+
 const Cows = () => {
-  const { cows, setCows } = useContext(AppContext)
+  const { cows, setCows, expenses, setExpenses } = useContext(AppContext)
+  const [investmentByAnimal, setInvestmentByAnimal] = useState(0)
   const [cowId, setCowId] = useState('')
   const [refresh, setRefresh] = useState(false)
   const {
@@ -58,6 +72,11 @@ const Cows = () => {
     setCows(cows.data.data)
   }
 
+  const getExpenses = async () => {
+    const expenses = await axiosConfig.get('/expenses')
+    setExpenses(expenses.data.data)
+  }
+
   const handleCreate = () => {
     onOpenCreate()
   }
@@ -74,12 +93,25 @@ const Cows = () => {
   useEffect(() => {
     try {
       getCows()
+      getExpenses()
     } catch (error) {
       console.log(error)
     }
   }, [refresh])
 
-  if (cows.length === 0) {
+  // TODO: Move to Context
+  useEffect(() => {
+    try {
+      const totalExpenses = expenses.reduce((acc, expense) => {
+        return acc + expense.cost * expense.quantity
+      }, 0)
+      setInvestmentByAnimal(totalExpenses / (cows.length + 1))
+    } catch (error) {
+      console.log(error)
+    }
+  }, [cows, expenses])
+
+  if (cows.length === 0 || investmentByAnimal === 0) {
     return (
       <Layout>
         <Box mt={'40'}>
@@ -102,6 +134,7 @@ const Cows = () => {
         <Text
           as={'h1'}
           mt={10}
+          mb={'8'}
           fontSize={'x-large'}
           fontWeight={'bold'}
           color={'green.700'}
@@ -154,7 +187,7 @@ const Cows = () => {
             variant={'outline'}
             leftIcon={<AddIcon />}
           >
-            <Text mt={1}>Agregar nuevo</Text>
+            <Text>Agregar nuevo</Text>
           </Button>
 
           <Table
@@ -203,15 +236,9 @@ const Cows = () => {
                       gridGap: '10px'
                     }}
                   >
-                    {/* Filtering _id and __v */}
+                    {/* Filtering data */}
                     {Object.keys(cow)
-                      .filter(
-                        (property) =>
-                          property !== '_id' &&
-                          property !== '__v' &&
-                          property !== 'createdAt' &&
-                          property !== 'updatedAt'
-                      )
+                      .filter(filterProperties)
                       .map((property, index) => {
                         return (
                           <React.Fragment key={`${tid}${property}`}>
@@ -238,7 +265,13 @@ const Cows = () => {
                               fontSize='md'
                               fontWeight='hairline'
                             >
-                              {cow[property as keyof ICow]}
+                              {property === 'date'
+                                ? formatDate(
+                                    new Date(cow[property as keyof ICow])
+                                      .toISOString()
+                                      .split('T')[0]
+                                  )
+                                : String(cow[property as keyof ICow])}
                             </Td>
                           </React.Fragment>
                         )
@@ -261,13 +294,87 @@ const Cows = () => {
                         precio total de compra ($)
                       </Text>
                     </Td>
+
                     <Td
                       textAlign={'center'}
                       color={'gray.500'}
                       fontSize='md'
                       fontWeight='hairline'
                     >
-                      {(cow.purchasePrice * cow.purchaseWeight).toFixed(2)}
+                      {(cow.purchasePrice * cow.initialWeight).toFixed(2)}
+                    </Td>
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>peso actual (kg)</Text>
+                    </Td>
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {cow.currentWeight}
+                    </Td>
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>ganancia de peso (kg)</Text>
+                    </Td>
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {cow.currentWeight - cow.initialWeight}
+                    </Td>
+
+                    <Td
+                      display={{
+                        base: 'table-cell',
+                        md: 'none'
+                      }}
+                      sx={{
+                        textTransform: 'uppercase',
+                        color: 'gray.500',
+                        fontSize: 'xs',
+                        fontWeight: 'bold',
+                        letterSpacing: 'wider',
+                        fontFamily: 'heading'
+                      }}
+                    >
+                      <Text textAlign={'center'}>inversión ($)</Text>
+                    </Td>
+                    <Td
+                      textAlign={'center'}
+                      color={'gray.500'}
+                      fontSize='md'
+                      fontWeight='hairline'
+                    >
+                      {investmentByAnimal.toFixed(2)}
                     </Td>
 
                     <Td

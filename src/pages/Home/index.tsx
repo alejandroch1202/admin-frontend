@@ -3,7 +3,7 @@ import { AppContext } from './../../context'
 import Layout from '../../layout'
 import CowsCharts from '../../components/Cows/Charts'
 import ExpensesCharts from '../../components/Expenses/Charts'
-import { Box, Spinner, Text } from '@chakra-ui/react'
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react'
 
 const Home = () => {
   const { cows, expenses } = useContext(AppContext)
@@ -25,20 +25,29 @@ const Home = () => {
 
   return (
     <Layout>
-      <>
+      <Flex
+        direction='column'
+        mb={'10'}
+      >
         <Text
           as={'h1'}
+          textAlign={'center'}
           mt={10}
-          mb={'5'}
+          mb={'8'}
           fontSize={'x-large'}
           fontWeight={'bold'}
           color={'green.700'}
         >
-          Panel
+          Resumen
         </Text>
-        <CowsCharts cows={cows} />
-        <ExpensesCharts expenses={expenses} />
-      </>
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          gap={{ base: 14, md: 28 }}
+        >
+          <CowsCharts cows={cows} />
+          <ExpensesCharts expenses={expenses} />
+        </Flex>
+      </Flex>
     </Layout>
   )
 }

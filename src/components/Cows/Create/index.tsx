@@ -11,7 +11,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   useToast
 } from '@chakra-ui/react'
 import axiosConfig from './../../../config/axios'
@@ -25,10 +24,11 @@ const CreateCow = ({
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [cow, setCow] = useState({
-    identifier: '',
-    type: '',
-    purchaseWeight: '',
-    purchasePrice: ''
+    date: '',
+    code: '',
+    initialWeight: '',
+    purchasePrice: '',
+    currentWeight: ''
   })
 
   const handleChange = (
@@ -38,11 +38,11 @@ const CreateCow = ({
   }
 
   const validateForm = () => {
-    const { identifier, type, purchaseWeight, purchasePrice } = cow
+    const { date, code, initialWeight, purchasePrice } = cow
     if (
-      identifier === '' ||
-      type === '' ||
-      purchaseWeight === '' ||
+      date === '' ||
+      code === '' ||
+      initialWeight === '' ||
       purchasePrice === ''
     ) {
       return true
@@ -53,6 +53,10 @@ const CreateCow = ({
 
   const handleSubmit = async () => {
     setLoading(true)
+
+    cow.date = new Date(cow.date).toISOString()
+    cow.currentWeight = cow.initialWeight
+
     try {
       await axiosConfig.post('/cows', cow)
       toast({
@@ -92,16 +96,7 @@ const CreateCow = ({
         <ModalHeader>Agregar nuevo</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl>
-            <FormLabel>Identificador</FormLabel>
-            <Input
-              name='identifier'
-              onChange={handleChange}
-              placeholder='Identificador'
-            />
-          </FormControl>
-
-          <FormControl mt={4}>
+          {/* <FormControl mt={4}>
             <FormLabel>Tipo</FormLabel>
             <Select
               name='type'
@@ -111,12 +106,34 @@ const CreateCow = ({
               <option value='Negro'>Negro</option>
               <option value='Rojo'>Rojo</option>
             </Select>
+          </FormControl> */}
+
+          <FormControl>
+            <FormLabel>Fecha de compra</FormLabel>
+            <Input
+              name='date'
+              size='md'
+              type='date'
+              max={new Date().toISOString().split('T')[0]}
+              onChange={handleChange}
+              placeholder='Fecha de compra'
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Código</FormLabel>
+            <Input
+              name='code'
+              type='text'
+              onChange={handleChange}
+              placeholder='Código'
+            />
           </FormControl>
 
           <FormControl mt={4}>
             <FormLabel>Peso de compra</FormLabel>
             <Input
-              name='purchaseWeight'
+              name='initialWeight'
               onChange={handleChange}
               type='number'
               placeholder='Peso de compra'

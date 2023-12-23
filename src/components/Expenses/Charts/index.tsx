@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Flex } from '@chakra-ui/react'
 import Chart from 'chart.js/auto'
 import { CategoryScale } from 'chart.js'
-import PieChart from './../../../components/Charts/Pie'
+import BarChart from './../../../components/Charts/Bar'
 
 Chart.register(CategoryScale)
 
@@ -12,7 +12,7 @@ const initialChartState = {
 }
 
 const chartStyles = {
-  backgroundColor: ['#38A169', '#ecf0f1', '#3182CE', '#f3ba2f', '#C53030'],
+  backgroundColor: ['#38A169', '#ecf0f1', '#f3ba2f', '#C53030', '#3182CE'],
   borderColor: '#A0AEC0',
   borderRadius: 2,
   borderWidth: 1
@@ -27,10 +27,14 @@ const ExpensesCharts = ({ expenses }: { expenses: IExpense[] }) => {
       labels,
       datasets: [
         {
-          label: 'Tipo de ganado',
-          data: labels.map(
-            (label) =>
-              expenses.filter((expense) => expense.category === label).length
+          label: 'Gasto total ($)',
+          data: labels.map((label) =>
+            expenses.reduce((acc, expense) => {
+              if (expense.category === label) {
+                return acc + expense.cost * expense.quantity
+              }
+              return acc
+            }, 0)
           ),
           ...chartStyles
         }
@@ -46,8 +50,10 @@ const ExpensesCharts = ({ expenses }: { expenses: IExpense[] }) => {
       direction={{ base: 'column', md: 'row' }}
       gap={'10'}
     >
-      <PieChart
-        text={'Gastos por categoría'}
+      <BarChart
+        text={'Gastos totales por categoría'}
+        xLabel=''
+        yLabel='Gasto total ($)'
         chartData={chartData}
       />
     </Flex>

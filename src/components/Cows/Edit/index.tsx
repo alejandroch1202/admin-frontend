@@ -13,8 +13,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Spinner,
+  Text,
+  useDisclosure,
   useToast
 } from '@chakra-ui/react'
 import axiosConfig from '../../../config/axios'
@@ -31,6 +32,11 @@ const EditCow = ({
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [cow, setCow] = useState<ICow>()
+  const {
+    isOpen: isOpenConfirm,
+    onOpen: onOpenConfirm,
+    onClose: onCloseConfirm
+  } = useDisclosure()
 
   const getCow = async () => {
     const cow = await axiosConfig.get(`/cows/${id}`)
@@ -56,14 +62,16 @@ const EditCow = ({
       return
     }
 
-    const { identifier, type, purchaseWeight, purchasePrice } = cow
+    const { code, date, initialWeight, purchasePrice, currentWeight } = cow
     if (
-      identifier === '' ||
-      type === '' ||
-      purchaseWeight === 0 ||
-      String(purchaseWeight) === '' ||
+      String(date) === '' ||
+      code === '' ||
+      initialWeight === 0 ||
+      String(initialWeight) === '' ||
       purchasePrice === 0 ||
-      String(purchasePrice) === ''
+      String(purchasePrice) === '' ||
+      currentWeight === 0 ||
+      String(currentWeight) === ''
     ) {
       return true
     } else {
@@ -134,17 +142,7 @@ const EditCow = ({
         <ModalHeader>Actualizar información</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl>
-            <FormLabel>Identificador</FormLabel>
-            <Input
-              defaultValue={cow.identifier}
-              name='identifier'
-              onChange={handleChange}
-              placeholder='Identificador'
-            />
-          </FormControl>
-
-          <FormControl mt={4}>
+          {/* <FormControl mt={4}>
             <FormLabel>Tipo</FormLabel>
             <Select
               defaultValue={cow.type}
@@ -155,13 +153,40 @@ const EditCow = ({
               <option value='Negro'>Negro</option>
               <option value='Rojo'>Rojo</option>
             </Select>
+          </FormControl> */}
+
+          <FormControl>
+            <FormLabel>Fecha de compra</FormLabel>
+            <Input
+              value={
+                String(cow.date) !== ''
+                  ? new Date(cow.date).toISOString().split('T')[0]
+                  : ''
+              }
+              name='date'
+              size='md'
+              type='date'
+              max={new Date().toISOString().split('T')[0]}
+              onChange={handleChange}
+              placeholder='Fecha de compra'
+            />
           </FormControl>
 
           <FormControl mt={4}>
-            <FormLabel>Peso de compra</FormLabel>
+            <FormLabel>Código</FormLabel>
             <Input
-              defaultValue={cow.purchaseWeight}
-              name='purchaseWeight'
+              defaultValue={cow.code}
+              name='code'
+              onChange={handleChange}
+              placeholder='Código'
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Peso de compra </FormLabel>
+            <Input
+              defaultValue={cow.initialWeight}
+              name='initialWeight'
               onChange={handleChange}
               type='number'
               placeholder='Peso de compra'
@@ -178,6 +203,44 @@ const EditCow = ({
               placeholder='Precio de compra'
             />
           </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Peso actual</FormLabel>
+            <Input
+              defaultValue={cow.currentWeight}
+              name='currentWeight'
+              onChange={handleChange}
+              type='number'
+              placeholder='Peso actual'
+            />
+          </FormControl>
+
+          <Modal
+            isOpen={isOpenConfirm}
+            onClose={onCloseConfirm}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Guardar cambios</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                <Text>¿Seguro que quires guardar los cambios?</Text>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button
+                  type='submit'
+                  isLoading={loading}
+                  onClick={handleSubmit}
+                  colorScheme='green'
+                  mr={3}
+                >
+                  Guardar
+                </Button>
+                <Button onClick={onCloseConfirm}>Cancelar</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </ModalBody>
 
         <ModalFooter>
@@ -185,7 +248,7 @@ const EditCow = ({
             type='submit'
             isDisabled={validateForm()}
             isLoading={loading}
-            onClick={handleSubmit}
+            onClick={onOpenConfirm}
             colorScheme='green'
             mr={3}
           >
